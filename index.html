@@ -369,10 +369,10 @@ s=>{s.classList.add("intro");s.style.touchAction="none";s.innerHTML=`<canvas cla
   Pt.forEach(a=>{if(fin<2){const k=.0015+.09*p*p*p,tx=cx+a.ux*sc*bt,ty=cy+a.uy*sc*bt;a.vx+=(tx-a.x)*k+Math.sin(now/900+a.ph)*.03*(1-p);a.vy+=(ty-a.y)*k+Math.cos(now/1100+a.ph)*.03*(1-p);const dx=a.x-mx,dy=a.y-my,d=dx*dx+dy*dy;if(d<9000&&!fin){const q=(1-d/9000)*.9,l=Math.sqrt(d+1);a.vx+=dx/l*q;a.vy+=dy/l*q}a.vx*=.9;a.vy*=.9}else{a.vx*=.985;a.vy=a.vy*.985-.02}a.x+=a.vx;a.y+=a.vy;g.fillStyle=a.c;g.fillRect(a.x,a.y,a.s*(fin==1?1.4:1),a.s*(fin==1?1.4:1))});
   requestAnimationFrame(f)})(performance.now())},
 /* 1 cake */
-s=>{s.style.touchAction="none";s.innerHTML=`<h1>Happy Birthday, My Love!</h1><p>${C.welcome}</p><div class="ckw" id="ckw">${CAKE()}</div><p id="wish"><i>Make a wish, then tap anywhere, or swipe across the flames, to blow out the candles</i></p>`;
+s=>{s.style.touchAction="pan-y";s.innerHTML=`<h1>Happy Birthday, My Love!</h1><p>${C.welcome}</p><div class="ckw" id="ckw">${CAKE()}</div><p id="wish"><i>Make a wish, then tap anywhere, or swipe across the flames, to blow out the candles</i></p>`;
  let out=0;const w=$("#ckw",s),cs=[...s.querySelectorAll(".cd")];
  const blow=c=>{if(c.classList.contains("out"))return;c.classList.add("out");out++;w.style.setProperty("--lit",1-out/3);const b=c.getBoundingClientRect();fly(b.x+b.width/2,b.y+b.height*.3,[],6,40);navigator.vibrate&&navigator.vibrate(15);
-  if(out==3)T(()=>{burst(220);fw(innerWidth*.25,innerHeight*.3);T(()=>fw(innerWidth*.75,innerHeight*.35),350);$("#wish").innerHTML="<i>May every wish come true.</i>";next(s,"See our memories")},1000)};
+  if(out==3)T(()=>{burst(220);fw(innerWidth*.25,innerHeight*.3);T(()=>fw(innerWidth*.75,innerHeight*.35),350);$("#wish").innerHTML="<i>May every wish come true.</i>";next(s,"See our memories");s.onpointerdown=s.onpointermove=null;s.style.touchAction="auto";s.lastElementChild.scrollIntoView({behavior:"smooth",block:"nearest"})},1000)};
  const near=(x,y)=>{let best,bd=1e9;cs.filter(c=>!c.classList.contains("out")).forEach(c=>{const b=c.getBoundingClientRect(),d=Math.hypot(x-(b.x+b.width/2),y-(b.y+b.height*.25));if(d<bd){bd=d;best=c}});return[best,bd]};
  s.onpointerdown=e=>{if(e.target.closest("button"))return;const[c]=near(e.clientX,e.clientY);c&&blow(c)};
  s.onpointermove=e=>{if(!e.buttons)return;const[c,d]=near(e.clientX,e.clientY);if(c&&d<50)blow(c)};
